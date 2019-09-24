@@ -1,0 +1,10 @@
+TIMERS2.o TIMERS2.o: ../TIMERS2.c ../STD_TYPES.h ../Macros.h \
+  ../TIMERS2_INTERFACE.h ../TIMERS2_PRIVATE.h
+
+../STD_TYPES.h:
+
+../Macros.h:
+
+../TIMERS2_INTERFACE.h:
+
+../TIMERS2_PRIVATE.h:
