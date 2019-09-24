@@ -21,7 +21,7 @@ void TMR2_vidInit_ctc(void)
 	 */
 	TCNT2=0;
 	OCR2=one_millisecondsresolution;
-	TCCR2 =(1<<FORCEOUTPUTCOMPAREDISABLE) |CTC_mode |F_CPU_64;
+	TCCR2 =(1<<FORCEOUTPUTCOMPAREDISABLE) |CTC_mode |F_CPU_CLOCK;
 }
 
 /*************timer delay enable ********/

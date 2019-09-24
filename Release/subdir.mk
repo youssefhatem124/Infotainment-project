@@ -5,28 +5,28 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Dio.c \
+../LCD.c \
 ../TIMERS.c \
 ../TIMERS2.c \
 ../keypad.c \
-../lcd.c \
 ../main.c \
 ../os_program.c 
 
 OBJS += \
 ./Dio.o \
+./LCD.o \
 ./TIMERS.o \
 ./TIMERS2.o \
 ./keypad.o \
-./lcd.o \
 ./main.o \
 ./os_program.o 
 
 C_DEPS += \
 ./Dio.d \
+./LCD.d \
 ./TIMERS.d \
 ./TIMERS2.d \
 ./keypad.d \
-./lcd.d \
 ./main.d \
 ./os_program.d 
 

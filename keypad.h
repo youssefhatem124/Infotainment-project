@@ -35,8 +35,13 @@
 
 #define keyD        16
 
-
-
+typedef enum
+{
+	RELEASED,
+	PRE_PRESSED,
+	PRESSED,
+	PRE_RELEASED
+}KeyPadSW_State_t;
 
 /*
 	No pressed keys -> return 0

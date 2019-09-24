@@ -1,9 +1,12 @@
-lcd.o lcd.o: ../lcd.c ../STD_TYPES.h ../Macros.h ../Dio.h ../lcd.h
-
-../STD_TYPES.h:
+LCD.o LCD.o: ../LCD.c ../Macros.h ../STD_TYPES.h ../Dio.h ../LCD.h \
+  ../TIMERS2_INTERFACE.h
 
 ../Macros.h:
 
+../STD_TYPES.h:
+
 ../Dio.h:
 
-../lcd.h:
+../LCD.h:
+
+../TIMERS2_INTERFACE.h:
