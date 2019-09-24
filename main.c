@@ -17,18 +17,15 @@
 #define NOT_ANSWERED	(0)
 #define NO				(0)
 #define YES				(1)
-
-uint8* quesArrPtr[5] = {"5+5 = 10?",
-		"4+4 = 20?",
-		"3+3 = 88?",
-		"1+1=1?",
-		"4*5 = 1?"};
-
-uint8 answArrPtr[5] = {YES, NO, NO, NO, NO};
 int main(void)
 {
+	OS_voidStart();
+	Keypad_init();
+	LCD_init(); /* initialize LCD */
+	OS_voidCreateTask(1,200,Keypad_getKey);
+	os_run();
 
-	uint8 key = 0;
+	/*uint8 key = 0;
 	uint8 i = 0;
 	uint8 QuesFlag = ANSWERED;
 	uint8 FinalRes_Flag = NO;
@@ -134,6 +131,6 @@ int main(void)
 			Start_Flag = NO;
 			LCD_displayString("press 9 start");
 		}
-	}
+	}*/
 }
 

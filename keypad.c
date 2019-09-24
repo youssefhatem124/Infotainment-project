@@ -12,7 +12,7 @@
 #include "keypad.h"
 uint8 Ci = 0;
 uint8 Ri = 0;
-static uint8 var=0 ;
+static uint8 value_keypad=0 ;
 static uint8 Press_count 	= 1;
 static uint8 Release_count = 10;
 static uint8 g_row;
@@ -89,7 +89,7 @@ void ButtonTask(void)
 	case PRESSED:
 		if(Get_Bit(KEYPAD_PIN,(5+Ci)) == 0)
 		{
-			var=(3*Ri + Ci + 1);
+			value_keypad=(3*Ri + Ci + 1);
 
 		}
 		Button_State = PRE_RELEASED;

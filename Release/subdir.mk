@@ -8,6 +8,7 @@ C_SRCS += \
 ../LCD.c \
 ../TIMERS.c \
 ../TIMERS2.c \
+../infotainment.c \
 ../keypad.c \
 ../main.c \
 ../os_program.c 
@@ -17,6 +18,7 @@ OBJS += \
 ./LCD.o \
 ./TIMERS.o \
 ./TIMERS2.o \
+./infotainment.o \
 ./keypad.o \
 ./main.o \
 ./os_program.o 
@@ -26,6 +28,7 @@ C_DEPS += \
 ./LCD.d \
 ./TIMERS.d \
 ./TIMERS2.d \
+./infotainment.d \
 ./keypad.d \
 ./main.d \
 ./os_program.d 
