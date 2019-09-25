@@ -6,6 +6,6 @@
  */
 #ifndef OS_PBCFG_H_
 #define OS_PBCFG_H_
-#define NUM_OF_TASKS  3
+#define NUM_OF_TASKS  4
 uint16 ticktime=1;
 #endif /* OS_PBCFG_H_ */

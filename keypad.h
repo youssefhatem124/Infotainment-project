@@ -9,9 +9,17 @@
 #define KEYPAD_H_
 
 
+/* Keypad Port Configurations */
+//#define KEYPAD_PORT_OUT PORTC
+//#define KEYPAD_PORT_IN  PINC
+//#define KEYPAD_PORT_DIR DDRC
+
+
+
 #define KEYPAD_PORT  PORTC
 #define KEYPAD_DDR   DDRC
 #define KEYPAD_PIN   PINC
+
 #define ROWS_MASK    0x1C    // (1<<PD0)|(1<<PD1)|(1<<PD2)|(1<<PD3)
 #define COLS_MASK    0xE0	 // (1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7)
 #define ROWS_NUM     3
@@ -50,5 +58,7 @@ typedef enum
 */
 void Keypad_init(void);
 uint8 Keypad_getKey(void);
+void Keypad_UpdateState(void);
+//uint8 KeyPad_getPressedKey(void);
 
 #endif /* KEYPAD_H_ */

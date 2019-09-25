@@ -11,7 +11,7 @@
 /* Assign a single bit */
 #define Set_Bit(PORT,PIN) ((PORT)|=(1<<(PIN)))
 #define Clear_Bit(PORT,PIN) ((PORT)&=~(1<<(PIN)))
-#define Get_Bit(PORT,PIN) ((PORT)&(1<<PIN))
+#define Get_Bit(REGISTER, BIT)		((REGISTER & (1 << BIT)) >> BIT)
 #define Toggle_Bit(PORT,PIN) ((PORT)^=(1<<(PIN)))
 
 /* Assign a multiple bits */

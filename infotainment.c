@@ -1,126 +1,182 @@
-#include "STD_TYPES.h"
-#include"MACROS.h"
-#include "infotanment.h"
-#include"keypad.h"
-#include"LCD.h"
+/*
+ * infotainment.c
+ *
+ *  Created on: Sep 25, 2019
+ *      Author: Taher & Youssef
+ */
+
+#include "infotainment.h"
+
+#include <util/delay.h>
+
 /************************************************************************/
-/*                    Global Variables                                   */
+/*   Infotainment Array of Ques					   				 	   */
 /************************************************************************/
-uint8 Infotainment_Status = INFOTAINMENT_IDLE;
-/************************************************************************/
-/*		Shared Variables   (between Tasks)                              */
-/************************************************************************/
-static uint8 Infotainment_NewDataFlag_g  ;
-static uint8 Infotainment_Result_g ;
-static uint8 Infotainment_Question_Index_g ;
-static uint8 Infotainment_Score = 0;
-extern uint8 value_keypad ;
-/************************************************************************/
-/*   Questions Array of strings					   					  */
-/************************************************************************/
-uint8* quesArrPtr[5] = {"5+5 = 10?",
+uint8* quesArrPtr[5] ={"5+5 = 10?",
 		"4+4 = 20?",
 		"3+3 = 88?",
 		"1+1=1?",
 		"4*5 = 1?"};
 /************************************************************************/
-/*   Infotainment Answers Array of chars					   					  */
+/*   Infotainment Answers Array of chars					   			*/
 /************************************************************************/
- const uint8 answArrPtr[5] = {YES, NO, NO, NO, NO};
-/************************************************************************"
-/*						Function Definitions
-************************************************************************/
+const uint8 answArrPtr[5] = {YES, NO, NO, NO, NO};
 
-void Infotainment_Start(void)
+
+static Infotainment_GameState_t Infotainment_State = START;
+static uint8 Infotainment_DisplayFlag_2Sec = TRUE;
+static uint8 Infotainment_DisplayFlag_5Sec = TRUE;
+static uint8 Start_Flag = YES;
+
+
+void Infotainment_Task(void)
 {
-	static uint8 result ;
-	Infotainment_Question_Index_g = 0 ;
-	Infotainment_Result_g = 0;
-	Infotainment_Score =0 ;
-	if (value_keypad == YES)
+	static uint8 key = 0;
+	static uint8 i = 0;
+	static uint8 QuesFlag = ANSWERED;
+	static uint8 FinalRes_Flag = NO;
+	static uint8 result = 0;
+
+	switch(Infotainment_State)
 	{
-		LCD_clear();
-	LCD_displayString("start game");
-	Infotainment_Status = INFOTAINMENT_QUESTION;
-	Infotainment_NewDataFlag_g = 1u;
+	case START:
+		if(Start_Flag == YES)
+		{
+			LCD_displayString(" wlcm to game :)");
+			LCD_gotoRowColumn(2, 1);
+			LCD_displayString("press 9 start");
+			Start_Flag = NO;
+
+			Infotainment_State = DISPLAY_QS;
+		}
+
+		break;
+
+	case DISPLAY_QS:
+		if((Keypad_getKey() == 9) && (Start_Flag == NO))
+		{
+			LCD_clear();
+			Start_Flag = YES;
+		}
+
+		if(i<6 && QuesFlag == ANSWERED && Start_Flag == YES && Infotainment_DisplayFlag_2Sec == TRUE)
+		{
+			LCD_clear();
+			LCD_displayString(quesArrPtr[i]);
+			QuesFlag = NOT_ANSWERED;
+		}
+
+		if((i<6) && (QuesFlag == NOT_ANSWERED))
+		{
+			key = Keypad_getKey();
+			if(1 ==  key)
+			{
+				if(answArrPtr[i] == YES)
+				{
+					LCD_clear();
+					LCD_displayString("CORRECT :)");
+					result++;
+					i++;
+					key = 0;
+					QuesFlag = ANSWERED;
+					Infotainment_DisplayFlag_2Sec = FALSE;
+				}
+				else
+				{
+					LCD_clear();
+					LCD_displayString("WRONG :(");
+					i++;
+					key = 0;
+					QuesFlag = ANSWERED;
+					Infotainment_DisplayFlag_2Sec = FALSE;
+				}
+
+			}
+			else if(key == 3)
+			{
+				if(answArrPtr[i] == NO)
+				{
+					LCD_clear();
+					LCD_displayString("CORRECT :)");
+					result++;
+					i++;
+					key = 0;
+					QuesFlag = ANSWERED;
+					Infotainment_DisplayFlag_2Sec = FALSE;
+				}
+				else
+				{
+					LCD_clear();
+					LCD_displayString("WRONG :(");
+					i++;
+					key = 0;
+					QuesFlag = ANSWERED;
+					Infotainment_DisplayFlag_2Sec = FALSE;
+				}
+
+			}
+			else
+			{
+
+			}
+
+
+			if(i==5)
+			{
+				Infotainment_State = DISPLAY_RESULT;
+				//				//	LCD_displayString("Your RESULT = ");
+				//				Infotainment_DisplayFlag_5Sec = FALSE;
+				//				DIO_SetPinDirection(PIN13, OUTPUT);
+				//				DIO_WritePin(PIN13, HIGH);
+			}
+
+		}
+
+
+		break;
+
+	case DISPLAY_RESULT:
+		if( Infotainment_DisplayFlag_5Sec == TRUE)
+		{
+			LCD_clear();
+			LCD_displayString("Your RESULT = ");
+			Infotainment_DisplayFlag_2Sec = FALSE;
+			LCD_gotoRowColumn(0, 15);
+			LCD_DispalyNumber(result);
+			Start_Flag = YES;
+			i=0;
+			Infotainment_DisplayFlag_5Sec = FALSE;
+
+			Infotainment_State = START;
+			break;
+
+			/*	if(Infotainment_DisplayFlag_2Sec == TRUE)
+			{
+				LCD_DispalyNumber(result);
+				Start_Flag = NO;
+				//	_delay_ms(4000);
+				Infotainment_DisplayFlag_5Sec = FALSE;
+				result = 0;
+				LCD_clear();
+				i=0;
+				DIO_SetPinDirection(PIN13, OUTPUT);
+				DIO_WritePin(PIN13, HIGH);
+			}*/
+		}
+
+	default:
+		break;
+		}
 	}
-	else if (result == NO )
+
+
+	void Infotainment_Delay_2Sec(void)
 	{
-		/*nothing */
+		Infotainment_DisplayFlag_2Sec = TRUE;
 	}
-}
 
-void Infotainment_PrintQuestion (void)
-{
-
-	if (Infotainment_NewDataFlag_g==1u)
+	void Infotainment_Delay_5Sec(void)
 	{
-	LCD_clearScreen();
-	LCD_displayString(quesArrPtr[5]) ;
-	Infotainment_Question_Index_g ++;
-	Infotainment_Status = INFOTAINMENT_GET_ANSWER ;
+		Infotainment_DisplayFlag_5Sec = TRUE;
+		Start_Flag = YES;
 	}
-
-	else
-	{
-		/*Do nothing*/
-	}
-}
-
-void Infotainment_GetAnswer (void)
-{
-	if (value_keypad == YES)
-	{
-	Infotainment_Result_g = 'Y' ;
-	Infotainment_NewDataFlag_g = 1u;
-	Infotainment_Status = INFOTAINMENT_SCORE ;
-	}
-	else if (value_keypad == NO)
-	{
-	Infotainment_Result_g = 'N' ;
-	Infotainment_NewDataFlag_g = 1u;
-	Infotainment_Status = INFOTAINMENT_SCORE ;
-	}
-	else
-	{
-		//Infotainment_NewDataFlag_g = 0u;
-	}
-
-}
-
-void Infotainment_ScoreDisplay (void)
-{
-
-
-	if (Infotainment_Result_g == answArrPtr[Infotainment_Question_Index_g -1])
-	 {
-		 Infotainment_Score ++ ;
-		 LCD_clearScreen();
-		 LCD_displayString(" Correct:)");
-		 Infotainment_NewDataFlag_g = 1u;
-	 }
-	 else
-	 {
-		 LCD_clearScreen();
-		 LCD_displayString(" Wrong :(");
-		 Infotainment_NewDataFlag_g = 1u;
-	 }
-	 if (Infotainment_Question_Index_g == INFOTAINMENT_NUMBER_OF_QUESTIONS)
-	 {
-		 Infotainment_Status = INFOTAINMENT_FINAL ;
-
-	 }
-	 else if (Infotainment_Question_Index_g < INFOTAINMENT_NUMBER_OF_QUESTIONS)
-	 {
-		 Infotainment_Status = INFOTAINMENT_QUESTION ;
-	 }
-}
-
-void Infotainment_FinalScore(void)
-{
-	LCD_clearScreen();
-	LCD_displayString(" Final Score = ");
-	integer_to_string(Infotainment_Score);
-	Infotainment_NewDataFlag_g = 0u;
-	Infotainment_Status = INFOTAINMENT_IDLE ;
-}
