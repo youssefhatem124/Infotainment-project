@@ -46,7 +46,6 @@ void Infotainment_Task(void)
 			LCD_gotoRowColumn(2, 1);
 			LCD_displayString("press 9 start");
 			Start_Flag = NO;
-
 			Infotainment_State = DISPLAY_QS;
 		}
 
@@ -124,10 +123,7 @@ void Infotainment_Task(void)
 			if(i==5)
 			{
 				Infotainment_State = DISPLAY_RESULT;
-				//				//	LCD_displayString("Your RESULT = ");
-				//				Infotainment_DisplayFlag_5Sec = FALSE;
-				//				DIO_SetPinDirection(PIN13, OUTPUT);
-				//				DIO_WritePin(PIN13, HIGH);
+				Infotainment_DisplayFlag_2Sec == FALSE;
 			}
 
 		}
@@ -136,7 +132,7 @@ void Infotainment_Task(void)
 		break;
 
 	case DISPLAY_RESULT:
-		if( Infotainment_DisplayFlag_5Sec == TRUE)
+		if( Infotainment_DisplayFlag_2Sec == TRUE)
 		{
 			LCD_clear();
 			LCD_displayString("Your RESULT = ");
@@ -145,27 +141,22 @@ void Infotainment_Task(void)
 			LCD_DispalyNumber(result);
 			Start_Flag = YES;
 			i=0;
-			Infotainment_DisplayFlag_5Sec = FALSE;
-
 			Infotainment_State = START;
-			break;
 
-			
 		}
-
-	default:
 		break;
-		}
+	default:break;
 	}
+}
 
 
-	void Infotainment_Delay_2Sec(void)
-	{
-		Infotainment_DisplayFlag_2Sec = TRUE;
-	}
+void Infotainment_Delay_2Sec(void)
+{
+	Infotainment_DisplayFlag_2Sec = TRUE;
+}
 
-	void Infotainment_Delay_5Sec(void)
-	{
-		Infotainment_DisplayFlag_5Sec = TRUE;
-		Start_Flag = YES;
-	}
+void Infotainment_Delay_5Sec(void)
+{
+	Infotainment_DisplayFlag_5Sec = TRUE;
+	Start_Flag = YES;
+}

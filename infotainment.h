@@ -11,7 +11,6 @@
 #include"STD_TYPES.h"
 #include"Macros.h"
 #include"Dio.h"
-#include"TIMERS_INTERFACE.h"
 #include"TIMERS2_INTERFACE.h"
 #include "keypad.h"
 #include "LCD.h"
