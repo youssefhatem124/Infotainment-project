@@ -150,18 +150,7 @@ void Infotainment_Task(void)
 			Infotainment_State = START;
 			break;
 
-			/*	if(Infotainment_DisplayFlag_2Sec == TRUE)
-			{
-				LCD_DispalyNumber(result);
-				Start_Flag = NO;
-				//	_delay_ms(4000);
-				Infotainment_DisplayFlag_5Sec = FALSE;
-				result = 0;
-				LCD_clear();
-				i=0;
-				DIO_SetPinDirection(PIN13, OUTPUT);
-				DIO_WritePin(PIN13, HIGH);
-			}*/
+			
 		}
 
 	default:
