@@ -23,7 +23,7 @@ int main(void)
 	OS_voidStart();
 	OS_voidCreateTask(Infotainment_Task, 10, 2);
 	OS_voidCreateTask(Infotainment_Delay_2Sec, 2000, 3);
-	OS_voidCreateTask(Infotainment_Delay_5Sec, 2000, 4);
+	OS_voidCreateTask(Infotainment_Delay_5Sec, 5000, 4);
 	OS_voidCreateTask(Keypad_UpdateState, 20, 1);
 	os_run();
 }

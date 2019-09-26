@@ -34,7 +34,6 @@ void Infotainment_Task(void)
 	static uint8 key = 0;
 	static uint8 i = 0;
 	static uint8 QuesFlag = ANSWERED;
-	static uint8 FinalRes_Flag = NO;
 	static uint8 result = 0;
 
 	switch(Infotainment_State)
@@ -123,7 +122,6 @@ void Infotainment_Task(void)
 			if(i==5)
 			{
 				Infotainment_State = DISPLAY_RESULT;
-				Infotainment_DisplayFlag_2Sec == FALSE;
 			}
 
 		}
